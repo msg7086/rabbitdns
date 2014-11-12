@@ -1,0 +1,19 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: powerdns
+  password: powerdns
+  host: 127.0.0.1
+
+development:
+  <<: *default
+  database: powerdns
+
+test:
+  <<: *default
+  database: powerdnstest
+
+production:
+  <<: *default
+  database: powerdns

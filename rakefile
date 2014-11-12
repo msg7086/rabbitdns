@@ -1,0 +1,23 @@
+require 'digest'
+require 'securerandom'
+require 'yaml'
+require 'active_record_migrations'
+
+ActiveRecordMigrations.configure do |c|
+  c.yaml_config = 'config/database.yml'
+end
+
+ActiveRecordMigrations.load_tasks
+
+desc "Installation"
+task :install => [] do
+  config = 'config/core.yml'
+  if !File.exists? config
+    # Used to generate domain authentication key
+    domain_auth_key = Digest::SHA2.base64digest SecureRandom.base64
+    # Used to generate new name servers
+    name_servers = ['ns1.example.com', 'ns2.example.com']
+    File.write config, ({'domain_auth_key' => domain_auth_key, 'name_servers' => name_servers, 'mailgun_key' => 'key-example'}).to_yaml
+    puts "#{config} written."
+  end
+end

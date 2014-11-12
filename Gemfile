@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+gem 'mysql2'
+gem 'grape'
+gem 'activerecord'
+gem 'rest-client'
+gem 'redis'
+gem 'whois'
+gem 'active_record_migrations'

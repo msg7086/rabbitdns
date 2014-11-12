@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/smartadmin-production.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body ng-app="rabbitHouse" ng-controller="Chino">
+
+<div class="container" ng-hide="logged_in">
+  <div id="login" class="col-xs-12 col-sm-12 col-md-offset-3 col-md-6" ng-controller="Rise">
+    <div class="well no-padding">
+      <form  id="login-form" class="smart-form client-form"  data-smart-validate-form>
+        <header>
+          Sign In
+        </header>
+        <fieldset>
+          <section>
+            <label class="label">E-mail</label>
+            <label class="input"> <i class="icon-append fa fa-user"></i>
+              <input type="email" name="email"
+                ng-model="email"
+                  data-smart-validate-input
+                  data-required
+                  data-email
+                  data-message-required="Please enter your email address"
+                  data-message-email="Please enter a VALID email address">
+              <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>
+                Please enter email address/username</b></label>
+          </section>
+          <section>
+            <label class="label">Password</label>
+            <label class="input"> <i class="icon-append fa fa-lock"></i>
+              <input type="password" name="password"
+                ng-model="password"
+                  data-smart-validate-input
+                  data-required
+                  data-message="Please enter your email password">
+              <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter
+                your password</b> </label>
+          </section>
+        </fieldset>
+        <footer>
+          <button class="btn btn-primary" ng-click="login()">
+            Sign in
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+</div>
+<div ng-show="logged_in">
+  <div ng-controller="Cocoa" id="layout">
+    <aside id="left-panel">
+      <div class="login-info">
+        <span><a href="/"><img src="logo.png" alt=""></a></span>
+      </div>
+
+      <nav>
+        <ul>
+          <li ng-repeat="d in domains" ng-class="{'active': d.id == active_domain.id}">
+            <a href="#" ng-click="load_records(d)">
+              <i class="fa fa-lg fa-fw fa-map-marker"></i> {{d.name}}
+            </a>
+          </li>
+          <li>
+            <a href="#" ng-click="add_domain()">
+              <i class="fa fa-lg fa-fw fa-plus"></i> Add
+            </a>
+          </li>
+          <li>
+            <a href="#" ng-click="refresh_domains()">
+              <i class="fa fa-lg fa-fw fa-refresh"></i> Refresh
+            </a>
+          </li>
+          <li>
+            <a href="#" ng-click="logout()">
+              <i class="fa fa-lg fa-fw fa-home"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div id="main">
+      <div id="content" class="limit1200" ng-show="active_domain">
+        <h1 class="txt-color-blueDark">
+          <i class="fa-fw fa fa-map-marker"></i> {{active_domain.name}}
+        </h1>
+        <div class="well">
+          <table class="table table-striped table-forum">
+            <thead><tr>
+              <th class="col-xs-5">A Records <a href="#" class="btn btn-success btn-rec" ng-click="add('A')">+</a></th>
+              <th class="col-xs-4">Target</th>
+              <th class="col-xs-3 text-center hidden-xs" style="width: 100px;">TTL</th>
+            </tr></thead>
+            <tbody>
+              <tr ng-repeat="g in groups.A">
+                <td>
+                  <span ng-repeat="r in g"><a href="#" class="btn btn-primary btn-rec" ng-click="edit(r)">{{prefix(r.name)}}</a> </span>
+                  <a href="#" class="btn btn-success btn-rec" ng-click="append(g[0], 'name')">+</a>
+                </td>
+                <td class="break-all">{{g[0].content}}</td>
+                <td class="text-center hidden-xs">{{g[0].ttl}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-striped table-forum">
+            <thead><tr>
+              <th class="col-xs-5">CName Records <a href="#" class="btn btn-success btn-rec" ng-click="add('CNAME')">+</a></th>
+              <th class="col-xs-4">Target</th>
+              <th class="col-xs-3 text-center hidden-xs" style="width: 100px;">TTL</th>
+            </tr></thead>
+            <tbody>
+              <tr ng-repeat="g in groups.C">
+                <td>
+                  <span ng-repeat="r in g"><a href="#" class="btn btn-primary btn-rec" ng-click="edit(r)">{{prefix(r.name)}}</a> </span>
+                  <a href="#" class="btn btn-success btn-rec" ng-click="append(g[0], 'name')">+</a>
+                </td>
+                <td>{{g[0].content}}</td>
+                <td class="text-center hidden-xs">{{g[0].ttl}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-striped table-forum">
+            <thead><tr>
+              <th class="col-xs-5">Mail Records</th>
+              <th class="col-xs-4">Target</th>
+              <th class="col-xs-3 text-center hidden-xs" style="width: 100px;">TTL</th>
+            </tr></thead>
+            <tbody>
+              <tr ng-repeat="g in groupMX">
+                <td>@{{g[0].name}}</td>
+                <td>
+                  <span ng-repeat="r in g"><a href="#" class="btn btn-primary btn-rec">{{g.content}} ({{g.prio}})</a></span>
+                  <a href="#" class="btn btn-success btn-rec">+</a>
+                </td>
+                <td class="text-center hidden-xs">{{g[0].ttl}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-striped table-forum">
+            <thead><tr>
+              <th class="col-xs-3">Other Records</th>
+              <th class="col-xs-9">Content</th>
+            </tr></thead>
+            <tbody>
+              <tr ng-repeat="r in groups.SOA">
+                <td>{{r.type}}</td>
+                <td>{{r.content}}</td>
+              </tr>
+              <tr>
+                <td>NS</td>
+                <td><div class="row"><div class="col-sm-3" ng-repeat="r in groups.NS">{{r.content}}</div></div></td>
+              </tr>
+              <tr ng-repeat="r in groups.TXT">
+                <td>{{r.type}}</td>
+                <td>{{r.content}}</td>
+              </tr>
+              <tr ng-repeat="r in groups.SRV">
+                <td>{{r.type}}</td>
+                <td>{{r.content}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="record" class="modal fade" ng-controller="Maya" data-backdrop="static">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">DNS Records ({{type}})</h4>
+      </div>
+      <div class="modal-body">
+        <form class="smart-form">
+          <div class="alert alert-block alert-danger" ng-show="error.length">
+            <p ng-repeat="e in error">{{e}}</p>
+          </div>
+          <fieldset>
+            <div class="row">
+              <section class="col col-xs-12">
+                <label class="input">
+                  <input type="text" placeholder="Name" ng-model="name">
+                  <span class="icon-append text-append">.{{baseuri}}</span>
+                </label>
+              </section>
+            </div>
+            <div class="row">
+              <section class="col col-xs-12">
+                <label class="input">
+                  <input type="text" placeholder="Target" ng-model="content">
+                </label>
+              </section>
+            </div>
+            <div class="row">
+              <section class="col col-xs-6">
+                <div class="rating">
+                  <input name="ttl-bar" type="radio" id="ttl-86400" ng-model="ttl" value="86400">
+                  <label for="ttl-86400"><i class="fa fa-star fa-lg" title="1 day"></i></label>
+                  <input name="ttl-bar" type="radio" id="ttl-10800" ng-model="ttl" value="10800">
+                  <label for="ttl-10800"><i class="fa fa-star fa-lg" title="3 hours"></i></label>
+                  <input name="ttl-bar" type="radio" id="ttl-3600" ng-model="ttl" value="3600">
+                  <label for="ttl-3600"><i class="fa fa-star fa-lg" title="1 hour"></i></label>
+                  <input name="ttl-bar" type="radio" id="ttl-1200" ng-model="ttl" value="1200">
+                  <label for="ttl-1200"><i class="fa fa-star fa-lg" title="20 minutes"></i></label>
+                  <input name="ttl-bar" type="radio" id="ttl-360" ng-model="ttl" value="360">
+                  <label for="ttl-360"><i class="fa fa-star fa-lg" title="6 minutes"></i></label>
+                </div>
+              </section>
+              <section class="col col-xs-6">
+                <label class="input"> <i class="icon-prepend fa fa-clock-o"></i>
+                  <input type="text" placeholder="TTL" ng-model="ttl">
+                </label>
+              </section>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" ng-click="delete()" ng-show="action == 'Save'">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="submit()">{{action}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="domain" class="modal fade" ng-controller="Megu" data-backdrop="static">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Add domain</h4>
+      </div>
+      <div class="modal-body">
+        <form class="smart-form">
+          <div class="alert alert-block alert-danger" ng-show="error.length">
+            <p ng-repeat="e in error">{{e}}</p>
+          </div>
+          <fieldset>
+            <div class="row">
+              <section class="col col-xs-12">
+                <label class="input">
+                  <input type="text" placeholder="Domain" ng-model="domain">
+                </label>
+              </section>
+            </div>
+            <div class="row">
+              <section class="col col-xs-12">
+                <label class="input">
+                  <input type="text" placeholder="Verification Code" ng-model="vcode">
+                </label>
+              </section>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="submit()">{{vcode==''?'Send verification code':'Verify'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/chino.js"></script>
+<script src="js/rise.js"></script>
+<script src="js/cocoa.js"></script>
+<script src="js/maya.js"></script>
+<script src="js/megu.js"></script>
+</body>
+</html>

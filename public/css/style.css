@@ -1,0 +1,58 @@
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url(/fonts/lato.woff) format('woff'), url(/fonts/lato.woff2) format('woff2');
+}
+
+html, body, button, input, select, textarea {
+  font-family: "Lato", sans-serif;
+}
+
+#login {
+  margin-top: 10%;
+}
+
+.btn-rec {
+  padding: 2px 8px;
+  color: #000;
+  background-color: #fff;
+}
+.btn-rec:hover {
+  color: #000;
+  background-color: #fff;
+}
+
+.table>tbody {
+  border-bottom: 1px solid #ddd
+}
+.table>thead>tr>th:first-child {
+  color: #57889c;
+}
+.limit1200 {
+  max-width: 1200px;
+}
+
+.smart-form .text-append, .smart-form .text-prepend {
+  width: auto;
+}
+.break-all {
+  word-break: break-all;
+}
+
+@media only screen and (max-width: 979px) {
+  #left-panel {
+    position: fixed;
+    left: 0; right: 0; top: 0; width: auto;
+    min-height: 0;
+  }
+  #left-panel .login-info {
+    display: none;
+  }
+  #left-panel > nav > ul > li {
+    float: left;
+  }
+  #content {
+    margin-top: 64px;
+  }
+}
