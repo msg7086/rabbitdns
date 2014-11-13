@@ -13,7 +13,7 @@
 <div class="container" ng-hide="logged_in">
   <div id="login" class="col-xs-12 col-sm-12 col-md-offset-3 col-md-6" ng-controller="Rise">
     <div class="well no-padding">
-      <form  id="login-form" class="smart-form client-form"  data-smart-validate-form>
+      <form id="login-form" class="smart-form client-form" data-smart-validate-form>
         <header>
           Sign In
         </header>
@@ -121,7 +121,7 @@
                   <span ng-repeat="r in g"><a href="#" class="btn btn-primary btn-rec" ng-click="edit(r)">{{prefix(r.name)}}</a> </span>
                   <a href="#" class="btn btn-success btn-rec" ng-click="append(g[0], 'name')">+</a>
                 </td>
-                <td>{{g[0].content}}</td>
+                <td class="break-all">{{g[0].content}}</td>
                 <td class="text-center hidden-xs">{{g[0].ttl}}</td>
               </tr>
             </tbody>
@@ -137,7 +137,7 @@
               <tr ng-repeat="g in groups.MX">
                 <td>@{{g[0].name}}</td>
                 <td>
-                  <span ng-repeat="r in g"><a href="#" class="btn btn-primary btn-rec" ng-click="edit(r)">{{r.content}} ({{r.prio}})</a></span>
+                  <span ng-repeat="r in g"><a href="#" class="btn btn-primary btn-rec" ng-click="edit(r)">{{r.content}} ({{r.prio}})</a> </span>
                   <a href="#" class="btn btn-success btn-rec" ng-click="append(g[0], 'content')">+</a>
                 </td>
                 <td class="text-center hidden-xs">{{g[0].ttl}}</td>
@@ -153,21 +153,29 @@
             <tbody>
               <tr ng-repeat="r in groups.SOA">
                 <td>{{r.type}}</td>
-                <td>{{r.content}}</td>
+                <td class="break-all">{{r.content}}</td>
               </tr>
               <tr>
                 <td>NS</td>
                 <td><div class="row"><div class="col-sm-3" ng-repeat="r in groups.NS">{{r.content}}</div></div></td>
               </tr>
               <tr ng-repeat="r in groups.TXT">
-                <td>{{r.type}}</td>
-                <td>{{r.content}}</td>
+                <td><a href="#" class="btn btn-primary btn-rec" ng-click="edit(r)">{{r.type}} [{{prefix(r.name)}}]</a></td>
+                <td class="break-all">{{r.content}}</td>
               </tr>
               <tr ng-repeat="r in groups.SRV">
-                <td>{{r.type}}</td>
-                <td>{{r.content}}</td>
+                <td><a href="#" class="btn btn-primary btn-rec" ng-click="edit(r)">{{r.type}} [{{prefix(r.name)}}]</a></td>
+                <td class="break-all">{{r.content}}</td>
               </tr>
             </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">
+                  <a href="#" class="btn btn-success btn-rec" ng-click="add('TXT')">+TXT</a>
+                  <a href="#" class="btn btn-success btn-rec" ng-click="add('SRV')">+SRV</a>
+                </td>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
@@ -204,7 +212,10 @@
             <div class="row">
               <section class="col col-xs-12">
                 <label class="input">
-                  <input type="text" placeholder="Target" ng-model="content">
+                  <input type="text" placeholder="Target" ng-model="content" ng-hide="type == 'TXT' || type == 'SRV'">
+                </label>
+                <label class="textarea">
+                  <textarea rows="8" placeholder="Content" ng-model="content" ng-show="type == 'TXT' || type == 'SRV'"></textarea>
                 </label>
               </section>
             </div>
