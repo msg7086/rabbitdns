@@ -81,7 +81,7 @@ module RabbitHouse
         puts d
         email = d[2]['email']
         send_mail domain, email
-        error! ["A verification email has been sent to <#{email}>"], 200
+        error! ["A verification email has been sent to <#{email}>"], 418
       end
 
       route_param :domain_id do
@@ -124,6 +124,7 @@ module RabbitHouse
           r.prefix = params[:name]
           r.content = params[:content]
           r.ttl = params[:ttl]
+          r.prio = params[:prio] if r.is_a? MX
           error! r.errors.full_messages, 400 if !r.save
         end
 

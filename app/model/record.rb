@@ -22,6 +22,7 @@ class Record < ActiveRecord::Base
   end
   def update_soa
     return if self.is_a? SOA
+    return if !changed?
     self.domain.update_soa
   end
 end

@@ -1,8 +1,11 @@
-# config/unicorn.rb
-worker_processes 1
+worker_processes ENV["RAILS_ENV"] == "production" ? 4 : 1
 timeout 15
 preload_app false
 listen '/tmp/unicorn.sock'
+APP_PATH = File.expand_path(File.dirname(__FILE__))
+working_directory APP_PATH
+stderr_path APP_PATH + "/logs/unicorn.log"
+stdout_path APP_PATH + "/logs/unicorn.log"
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do

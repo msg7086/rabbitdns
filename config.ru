@@ -9,7 +9,9 @@ use ActiveRecord::ConnectionAdapters::ConnectionManagement
 Dir[File.dirname(__FILE__) + "/app/*/*.rb"].each {|file| require file }
 require File.dirname(__FILE__) + "/app/dns.rb"
 
-ActiveRecord::Base.logger = Logger.new('debug.log')
+$logger = Logger.new('logs/debug.log')
+ActiveRecord::Base.logger = $logger
+
 database = YAML::load(IO.read('config/database.yml'))
 ActiveRecord::Base.establish_connection(database['development'])
 $config = YAML::load(IO.read('config/core.yml'))

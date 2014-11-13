@@ -3,6 +3,7 @@ module RabbitHouse
     version 'v1', using: :header, vendor: 'RabbitHouse'
     format :json
     prefix :api
+    logger $logger
     helpers do
       def current_user
         @user ||= User.authorize! request.headers['X-Key']

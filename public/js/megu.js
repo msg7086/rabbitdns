@@ -3,6 +3,9 @@ rabbitHouse.controller('Megu', function ($scope, $http) {
   $scope.vcode = ''
   $scope.error = []
   $scope.$on('Megu::Shigoto', function(event, msg) {
+    $scope.domain = ''
+    $scope.vcode = ''
+    $scope.error = []
     $('#domain').modal()
   })
   $scope.submit = function () {

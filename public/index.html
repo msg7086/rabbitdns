@@ -5,6 +5,8 @@
   <link rel="stylesheet" href="/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/smartadmin-production.min.css">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="favicon.png">
+  <title>Rabbit House DNS</title>
 </head>
 <body ng-app="rabbitHouse" ng-controller="Chino">
 
@@ -127,16 +129,16 @@
 
           <table class="table table-striped table-forum">
             <thead><tr>
-              <th class="col-xs-5">Mail Records</th>
+              <th class="col-xs-5">Mail Records <a href="#" class="btn btn-success btn-rec" ng-click="add('MX')">+</a></th>
               <th class="col-xs-4">Target</th>
               <th class="col-xs-3 text-center hidden-xs" style="width: 100px;">TTL</th>
             </tr></thead>
             <tbody>
-              <tr ng-repeat="g in groupMX">
+              <tr ng-repeat="g in groups.MX">
                 <td>@{{g[0].name}}</td>
                 <td>
-                  <span ng-repeat="r in g"><a href="#" class="btn btn-primary btn-rec">{{g.content}} ({{g.prio}})</a></span>
-                  <a href="#" class="btn btn-success btn-rec">+</a>
+                  <span ng-repeat="r in g"><a href="#" class="btn btn-primary btn-rec" ng-click="edit(r)">{{r.content}} ({{r.prio}})</a></span>
+                  <a href="#" class="btn btn-success btn-rec" ng-click="append(g[0], 'content')">+</a>
                 </td>
                 <td class="text-center hidden-xs">{{g[0].ttl}}</td>
               </tr>
@@ -187,10 +189,15 @@
           </div>
           <fieldset>
             <div class="row">
-              <section class="col col-xs-12">
+              <section class="col col-xs-{{type == 'MX' ? 8 : 12}}">
                 <label class="input">
                   <input type="text" placeholder="Name" ng-model="name">
                   <span class="icon-append text-append">.{{baseuri}}</span>
+                </label>
+              </section>
+              <section class="col col-xs-4" ng-show="type == 'MX'">
+                <label class="input">
+                  <input type="text" placeholder="Priority" ng-model="prio">
                 </label>
               </section>
             </div>

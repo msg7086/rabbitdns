@@ -3,6 +3,7 @@ rabbitHouse.controller('Maya', function ($scope, $http) {
   $scope.id = 0
   $scope.name = ''
   $scope.content = ''
+  $scope.prio = 10
   $scope.ttl = 3600
   $scope.type = ''
   $scope.domain = null
@@ -17,6 +18,7 @@ rabbitHouse.controller('Maya', function ($scope, $http) {
     var skip = msg[3]
     $scope.record = record
     $scope.error = []
+    $scope.prio = 10
     if(msg[0] === 'Edit') {
       $scope.id = record.id
       $scope.name = $scope.prefix(record.name)
@@ -53,7 +55,7 @@ rabbitHouse.controller('Maya', function ($scope, $http) {
   $scope.submit = function () {
     $scope.error = []
     $http.post('/api/domain/'+$scope.domain.id,
-      {id: $scope.id, name: $scope.name, content: $scope.content, type: $scope.type, ttl: $scope.ttl}
+      {id: $scope.id, name: $scope.name, content: $scope.content, type: $scope.type, ttl: $scope.ttl, prio: $scope.prio}
       ).success(function () {
         $('#record').modal('hide')
         $scope.$emit('Call', ['Cocoa','RefreshRecords'])
