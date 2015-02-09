@@ -16,7 +16,7 @@ class Domain < ActiveRecord::Base
       soa = self.records.create type: 'SOA', name: self.name, content: '-', ttl: 43200
     end
     ns = $config['name_servers'].first
-    soa.content = "#{self.name} #{ns} #{Time.now.to_i} 3600 360 1209600 300"
+    soa.content = "#{ns} admin.#{self.name} #{Time.now.to_i} 3600 360 1209600 300"
     soa.save
   end
 end
