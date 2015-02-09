@@ -18,30 +18,28 @@ rabbitHouse.controller('Maya', function ($scope, $http) {
     var skip = msg[3]
     $scope.record = record
     $scope.error = []
-    $scope.prio = 10
-    if(msg[0] === 'Edit') {
-      $scope.id = record.id
-      $scope.name = $scope.prefix(record.name)
-      $scope.content = record.content
-      $scope.ttl = record.ttl
-      $scope.type = record.type
-      $scope.action = 'Save'
-    }
-    else if(msg[0] === 'Append') {
-      $scope.id = 0
-      $scope.name = $scope.prefix(record.name)
-      $scope.content = record.content
-      $scope.ttl = record.ttl
-      $scope.type = record.type
-      $scope[skip] = ''
-      $scope.action = 'Create'
-    }
-    else if(msg[0] === 'Add') {
+    if(msg[0] === 'Add') {
+      $scope.prio = 10
       $scope.id = 0
       $scope.name = ''
       $scope.content = ''
       $scope.ttl = 3600
       $scope.type = msg[2]
+      $scope.action = 'Create'
+      return
+    }
+    $scope.name = $scope.prefix(record.name)
+    $scope.content = record.content
+    $scope.ttl = record.ttl
+    $scope.type = record.type
+    $scope.prio = record.prio
+    $scope.id = record.id
+    if(msg[0] === 'Edit') {
+      $scope.action = 'Save'
+    }
+    else if(msg[0] === 'Append') {
+      $scope.id = 0
+      $scope[skip] = ''
       $scope.action = 'Create'
     }
   })

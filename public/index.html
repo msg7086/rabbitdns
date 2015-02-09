@@ -186,12 +186,12 @@
 <div id="record" class="modal fade" ng-controller="Maya" data-backdrop="static">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">DNS Records ({{type}})</h4>
-      </div>
-      <div class="modal-body">
-        <form class="smart-form">
+      <form class="smart-form" ng-submit="submit()">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title">DNS Records ({{type}})</h4>
+        </div>
+        <div class="modal-body">
           <div class="alert alert-block alert-danger" ng-show="error.length">
             <p ng-repeat="e in error">{{e}}</p>
           </div>
@@ -241,13 +241,13 @@
               </section>
             </div>
           </fieldset>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" ng-click="delete()" ng-show="action == 'Save'">Delete</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" ng-click="submit()">{{action}}</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" ng-click="delete()" ng-show="action == 'Save'">Delete</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" ng-click="submit()">{{action}}</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -260,7 +260,7 @@
         <h4 class="modal-title">Add domain</h4>
       </div>
       <div class="modal-body">
-        <form class="smart-form">
+        <form class="smart-form" ng-submit="submit()">
           <div class="alert alert-block alert-danger" ng-show="error.length">
             <p ng-repeat="e in error">{{e}}</p>
           </div>
